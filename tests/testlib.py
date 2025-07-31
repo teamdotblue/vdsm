@@ -338,16 +338,15 @@ def run():
     Main test runner function that processes command line arguments and runs pytest.
     """
     pytest_args = sys.argv[1:]  # Skip script name
-    
+
     # Handle environment variables for test control
     if os.environ.get('PYTEST_SLOW_TESTS'):
         if '--enable-slow-tests' not in pytest_args:
             pytest_args.append('--enable-slow-tests')
-    
+
     if os.environ.get('PYTEST_STRESS_TESTS'):
         if '--enable-stress-tests' not in pytest_args:
             pytest_args.append('--enable-stress-tests')
-    
     # Handle PYTEST_EVAL_ATTR for attribute selection
     eval_attr = os.environ.get('PYTEST_EVAL_ATTR')
     if eval_attr:
@@ -362,7 +361,7 @@ def run():
                 marker = eval_attr.split('==')[1].strip("'\"")
                 if '-m' not in pytest_args:
                     pytest_args.extend(['-m', marker])
-    
+
     # Handle PYTEST_EXCLUDE for excluding tests
     exclude_pattern = os.environ.get('PYTEST_EXCLUDE')
     if exclude_pattern:
@@ -374,11 +373,11 @@ def run():
             # Use pytest's -k option to exclude tests matching the pattern
             if '-k' not in pytest_args:
                 pytest_args.extend(['-k', f'not ({exclude_pattern})'])
-    
+
     # Add current directory as default if no tests specified
     if not any(arg for arg in pytest_args if not arg.startswith('-')):
         pytest_args.append('.')
-    
+
     # Register our custom pytest plugins and run
     exit_code = pytest.main(pytest_args, plugins=[
         SlowTestsPlugin(),
@@ -387,7 +386,7 @@ def run():
         ProcessLeakPlugin(),
         FileLeakPlugin(),
     ])
-    
+
     sys.exit(exit_code)
 
 

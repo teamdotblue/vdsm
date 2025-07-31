@@ -35,8 +35,8 @@ class SlowTestsPlugin:
         )
 
     def pytest_configure(self, config):
-        if (config.getoption('--enable-slow-tests') or 
-            os.environ.get('PYTEST_SLOW_TESTS')):
+        if (config.getoption('--enable-slow-tests') or
+                os.environ.get('PYTEST_SLOW_TESTS')):
             SlowTestsPlugin.enabled = True
 
 
@@ -63,8 +63,7 @@ class StressTestsPlugin:
         )
 
     def pytest_configure(self, config):
-        if (config.getoption('--enable-stress-tests') or
-            os.environ.get('PYTEST_STRESS_TESTS')):
+        if (config.getoption('--enable-stress-tests') or os.environ.get('PYTEST_STRESS_TESTS')):
             StressTestsPlugin.enabled = True
 
 
