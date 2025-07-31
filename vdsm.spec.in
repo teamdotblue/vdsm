@@ -348,6 +348,7 @@ A Json-based RPC interface that serves as the protocol for libvdsm.
 Summary:        JSON RPC server and client implementation
 BuildArch:      noarch
 Requires:       python3 >= 3.6
+Requires:       python3-pyasyncore
 
 %description yajsonrpc
 A JSON RPC server and client implementation.

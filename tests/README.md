@@ -215,7 +215,7 @@ To enable slow tests:
      
     ./run_tests_local.sh --enable-slow-tests filename [...]
 
-Slow tests are also enabled if NOSE_SLOW_TESTS environment variable is set.
+Slow tests are also enabled if PYTEST_SLOW_TESTS environment variable is set.
 
 ## Enabling stress tests
 
@@ -228,7 +228,7 @@ To enable stress tests:
      
     ./run_tests_local.sh --enable-stress-tests filename [...]
 
-Stress tests are also enabled if NOSE_STRESS_TESTS environment variable is set.
+Stress tests are also enabled if PYTEST_STRESS_TESTS environment variable is set.
 
 ## Enabling threads leak check
 
@@ -238,7 +238,7 @@ To find tests leaking threads, you can enable the thread leak checker plugin:
 
 To run the entire test suit with thread leak detection:
 
-    make check NOSE_WITH_THREAD_LEAK_CHECK=1
+    make check PYTEST_WITH_THREAD_LEAK_CHECK=1
 
 ## Enabling process leak check
 
@@ -249,7 +249,7 @@ plugin:
 
 To run the entire test suit with process leak detection:
 
-    make check NOSE_WITH_PROCESS_LEAK_CHECK=1
+    make check PYTEST_WITH_PROCESS_LEAK_CHECK=1
 
 ## Enabling file leak check
 
@@ -260,7 +260,7 @@ plugin:
 
 To run the entire test suit with file leak detection:
 
-    make check NOSE_WITH_FILE_LEAK_CHECK=1
+    make check PYTEST_WITH_FILE_LEAK_CHECK=1
 
 ## Control verbose level
 
@@ -269,7 +269,7 @@ To run with verbose output, set verbose level to 3.
 
 To set verbose level:
     
-    make check NOSE_VERBOSE=<VERBOSE LEVEL>
+    make check PYTEST_VERBOSE=<VERBOSE LEVEL>
 
 ## Functional test suite
 

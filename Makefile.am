@@ -118,18 +118,18 @@ check-recursive:
 
 .PHONY: check-all
 check-all:
-	$(MAKE) check NOSE_STRESS_TESTS=1 NOSE_SLOW_TESTS=1
+	$(MAKE) check PYTEST_STRESS_TESTS=1 PYTEST_SLOW_TESTS=1
 
 .PHONY: check-unit
 check-unit:
-	$(MAKE) -C tests/ check NOSE_EVAL_ATTR="type=='unit'"
+	$(MAKE) -C tests/ check PYTEST_EVAL_ATTR="type=='unit'"
 
 .PHONY: lint
 lint: gitignore reuse execcmd black flake8 pylint
 
 .PHONY: venv
 venv:
-	python3 -m venv $(VENV_DIR) && \
+	python3 -m venv --system-site-packages $(VENV_DIR) && \
 	$(VENV)/python3 -m pip install --upgrade pip && \
 	$(VENV)/python3 -m pip install -r docker/requirements.txt
 

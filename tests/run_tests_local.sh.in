@@ -18,15 +18,17 @@ trap terminate_jobs EXIT
 
 export \
     LC_ALL=C.UTF8 \
-    NOSE_EVAL_ATTR \
-    NOSE_LOGFORMAT='%(asctime)s %(levelname)-5s (%(threadName)s) [%(name)s] %(message)s (%(module)s:%(lineno)d)' \
-    NOSE_VERBOSE=${NOSE_VERBOSE:-1} \
+    PYTEST_EVAL_ATTR \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONPATH="@top_srcdir@/static/usr/share/vdsm:@top_srcdir@/lib:@top_srcdir@/vdsm_api:$PYTHONPATH" \
+    PYTHONPATH="@top_srcdir@/static/usr/share/vdsm:@top_srcdir@/lib:@top_srcdir@/lib/vdsm/hook:@top_srcdir@/vdsm_hooks:@top_srcdir@/vdsm_api:$PYTHONPATH" \
     $NULL
 
 if [ -n "$TIMEOUT" ]; then
     PYTHON_EXE="$PYTHON_EXE py-watch $TIMEOUT $PYTHON_EXE"
 fi
 
+source ~/.venv/vdsm/bin/activate || {
+    echo "Failed to activate virtual environment. Please ensure it is set up correctly."
+    exit 1
+}
 $PYTHON_EXE "@top_srcdir@"/tests/testrunner.py --local-modules "$@"

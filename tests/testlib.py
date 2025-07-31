@@ -23,9 +23,7 @@ import threading
 from contextlib import contextmanager
 import xml.etree.ElementTree as ET
 
-from nose import config
-from nose import core
-from nose import result
+import pytest
 
 import vdsm
 
@@ -164,7 +162,7 @@ class TermColor(object):
 
 
 def colorWrite(stream, text, color):
-    if os.isatty(stream.fileno()) or os.environ.get("NOSE_COLOR", False):
+    if os.isatty(stream.fileno()):
         stream.write('\x1b[%s;1m%s\x1b[0m' % (color, text))
     else:
         stream.write(text)
@@ -311,71 +309,6 @@ def find_xml_element(xml, match):
     return ET.tostring(found)
 
 
-class VdsmTestResult(result.TextTestResult):
-    def __init__(self, *args, **kwargs):
-        result.TextTestResult.__init__(self, *args, **kwargs)
-        self._last_case = None
-
-    def _writeResult(self, test, long_result, color, short_result, success):
-        if self.showAll:
-            colorWrite(self.stream, long_result, color)
-            self.stream.writeln()
-        elif self.dots:
-            self.stream.write(short_result)
-            self.stream.flush()
-
-    def addSuccess(self, test):
-        unittest.TestResult.addSuccess(self, test)
-        self._writeResult(test, 'OK', TermColor.green, '.', True)
-
-    def addFailure(self, test, err):
-        unittest.TestResult.addFailure(self, test, err)
-        self._writeResult(test, 'FAIL', TermColor.red, 'F', False)
-
-    def addError(self, test, err):
-        stream = getattr(self, 'stream', None)
-        ec, ev, tb = err
-        try:
-            exc_info = self._exc_info_to_string(err, test)
-        except TypeError:
-            # 2.3 compat
-            exc_info = self._exc_info_to_string(err)
-        for cls, (storage, label, isfail) in self.errorClasses.items():
-            if result.isclass(ec) and issubclass(ec, cls):
-                if isfail:
-                    test.passed = False
-                storage.append((test, exc_info))
-                # Might get patched into a streamless result
-                if stream is not None:
-                    if self.showAll:
-                        message = [label]
-                        detail = result._exception_detail(err[1])
-                        if detail:
-                            message.append(detail)
-                        stream.writeln(": ".join(message))
-                    elif self.dots:
-                        stream.write(label[:1])
-                return
-        self.errors.append((test, exc_info))
-        test.passed = False
-        if stream is not None:
-            self._writeResult(test, 'ERROR', TermColor.red, 'E', False)
-
-    def startTest(self, test):
-        unittest.TestResult.startTest(self, test)
-        current_case = "%s.%s" % (test.test.__module__,
-                                  test.test.__class__.__name__)
-
-        if self.showAll:
-            if current_case != self._last_case:
-                self.stream.writeln(current_case)
-                self._last_case = current_case
-
-            method_name = str(test.test._testMethodName).ljust(60)
-            self.stream.write('    %s' % method_name.encode())
-            self.stream.flush()
-
-
 @contextmanager
 def not_raises(test_case):
     try:
@@ -400,35 +333,62 @@ class AssertingLock(object):
         self._lock.release()
 
 
-class VdsmTestRunner(core.TextTestRunner):
-
-    def _makeResult(self):
-        return VdsmTestResult(self.stream,
-                              self.descriptions,
-                              self.verbosity,
-                              self.config)
-
-
 def run():
-    argv = sys.argv
-    stream = sys.stdout
-    testdir = os.path.dirname(os.path.abspath(__file__))
-
-    conf = config.Config(stream=stream,
-                         env=os.environ,
-                         workingDir=testdir,
-                         plugins=core.DefaultPluginManager())
-    conf.plugins.addPlugin(SlowTestsPlugin())
-    conf.plugins.addPlugin(StressTestsPlugin())
-    conf.plugins.addPlugin(ThreadLeakPlugin())
-    conf.plugins.addPlugin(ProcessLeakPlugin())
-    conf.plugins.addPlugin(FileLeakPlugin())
-
-    runner = VdsmTestRunner(stream=conf.stream,
-                            verbosity=conf.verbosity,
-                            config=conf)
-
-    sys.exit(not core.run(config=conf, testRunner=runner, argv=argv))
+    """
+    Main test runner function that processes command line arguments and runs pytest.
+    """
+    pytest_args = sys.argv[1:]  # Skip script name
+    
+    # Handle environment variables for test control
+    if os.environ.get('PYTEST_SLOW_TESTS'):
+        if '--enable-slow-tests' not in pytest_args:
+            pytest_args.append('--enable-slow-tests')
+    
+    if os.environ.get('PYTEST_STRESS_TESTS'):
+        if '--enable-stress-tests' not in pytest_args:
+            pytest_args.append('--enable-stress-tests')
+    
+    # Handle PYTEST_EVAL_ATTR for attribute selection
+    eval_attr = os.environ.get('PYTEST_EVAL_ATTR')
+    if eval_attr:
+        # Convert attribute expressions to pytest marker expressions
+        # For example: "type=='unit'" becomes "-m unit"
+        if eval_attr == "type=='unit'":
+            if '-m' not in pytest_args:
+                pytest_args.extend(['-m', 'unit'])
+        else:
+            # For other expressions, try to parse and convert
+            if '==' in eval_attr:
+                marker = eval_attr.split('==')[1].strip("'\"")
+                if '-m' not in pytest_args:
+                    pytest_args.extend(['-m', marker])
+    
+    # Handle PYTEST_EXCLUDE for excluding tests
+    exclude_pattern = os.environ.get('PYTEST_EXCLUDE')
+    if exclude_pattern:
+        # If the pattern is ".*" (exclude everything), don't run any tests
+        if exclude_pattern == ".*":
+            print("Tests excluded by PYTEST_EXCLUDE pattern: .*")
+            sys.exit(0)
+        else:
+            # Use pytest's -k option to exclude tests matching the pattern
+            if '-k' not in pytest_args:
+                pytest_args.extend(['-k', f'not ({exclude_pattern})'])
+    
+    # Add current directory as default if no tests specified
+    if not any(arg for arg in pytest_args if not arg.startswith('-')):
+        pytest_args.append('.')
+    
+    # Register our custom pytest plugins and run
+    exit_code = pytest.main(pytest_args, plugins=[
+        SlowTestsPlugin(),
+        StressTestsPlugin(),
+        ThreadLeakPlugin(),
+        ProcessLeakPlugin(),
+        FileLeakPlugin(),
+    ])
+    
+    sys.exit(exit_code)
 
 
 def make_config(tunables):
