@@ -17,8 +17,8 @@ except ImportError:
         import pyasyncore as asyncore
     except ImportError:
         raise ImportError(
-            "asyncore module not available. For Python 3.12+, install pyasyncore: "
-            "pip install pyasyncore"
+            "asyncore module not available. For Python 3.12+, install "
+            "pyasyncore: pip install pyasyncore"
         )
 
 import errno
