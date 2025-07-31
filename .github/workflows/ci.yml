@@ -17,9 +17,14 @@ jobs:
     - uses: ovirt/checkout-action@main
     - name: Run linters
       run: ./ci/lint.sh
+      env:
+        FORCE_COLOR: 1
+        PY_COLORS: 1
   test-storage-user:
     env:
       TRAVIS_CI: 1
+      FORCE_COLOR: 1
+      PY_COLORS: 1
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -40,6 +45,8 @@ jobs:
   test-storage-root:
     env:
       TRAVIS_CI: 1
+      FORCE_COLOR: 1
+      PY_COLORS: 1
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -60,6 +67,8 @@ jobs:
   tests:
     env:
       TRAVIS_CI: 1
+      FORCE_COLOR: 1
+      PY_COLORS: 1
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -96,6 +105,9 @@ jobs:
         fetch-depth: 0
     - name: Build RPMs
       run: ./ci/rpm.sh
+      env:
+        FORCE_COLOR: 1
+        PY_COLORS: 1
     - name: Upload artifacts
       uses: ovirt/upload-rpms-action@main
       with:
