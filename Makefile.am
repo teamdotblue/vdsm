@@ -135,7 +135,11 @@ venv:
 
 .PHONY: tests
 tests: tox
-	tox -e "tests,lib,network,virt,gluster,hooks"
+	if [ "$(GLUSTER_MGMT)" = "1" ]; then \
+		tox -e "tests,lib,network,virt,gluster,hooks"; \
+	else \
+		tox -e "tests,lib,network,virt,hooks"; \
+	fi
 
 .PHONY: tests-storage-user
 tests-storage-user: tox

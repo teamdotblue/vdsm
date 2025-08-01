@@ -27,8 +27,8 @@ if [ -n "$TIMEOUT" ]; then
     PYTHON_EXE="$PYTHON_EXE py-watch $TIMEOUT $PYTHON_EXE"
 fi
 
-source ~/.venv/vdsm/bin/activate || {
-    echo "Failed to activate virtual environment. Please ensure it is set up correctly."
-    exit 1
-}
+#source ~/.venv/vdsm/bin/activate || {
+#    echo "Failed to activate virtual environment. Please ensure it is set up correctly."
+#    exit 1
+#}
 $PYTHON_EXE "@top_srcdir@"/tests/testrunner.py --local-modules "$@"
