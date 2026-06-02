@@ -17,7 +17,6 @@ import functools
 import json
 import logging
 import os
-import sys
 
 from contextlib import closing
 
@@ -52,6 +51,9 @@ SUPPORTED_DRIVERS = (
 
     # Tested by Moritz Wanzenböck <technik+ovirt (at) linbit.com>
     "local",
+
+    # Tested by Viktor Ivanov <info (at) storpool.com>
+    "storpool",
 )
 
 log = logging.getLogger("storage.managedvolume")
@@ -94,7 +96,8 @@ def attach_volume(sd_id, vol_id, connection_info):
                   vol_id, connection_info)
 
         try:
-            attachment = run_helper("attach", connection_info)
+            vol_info = {"connection_info": connection_info}
+            attachment = run_helper("attach", vol_info)
             try:
                 path = _resolve_path(vol_id, connection_info, attachment)
                 db.update_volume(
@@ -181,17 +184,26 @@ def volumes_info(vol_ids=()):
 # supervdsm interface
 
 
-def run_helper(sub_cmd, cmd_input=None):
+def run_helper(sub_cmd, vol_info=None):
     if os.geteuid() != 0:
         return supervdsm.getProxy().managedvolume_run_helper(
-            sub_cmd, cmd_input=cmd_input)
+            sub_cmd, vol_info=vol_info)
     try:
-        if cmd_input:
-            cmd_input = json.dumps(cmd_input).encode("utf-8")
-        # This is the only sane way to run python scripts that work with both
-        # python2 and python3 in the tests.
-        # TODO: Remove when we drop python 2.
-        cmd = [sys.executable, HELPER, sub_cmd]
+        adapter = None
+        cmd_input = None
+        if vol_info:
+            cmd_input = json.dumps(vol_info).encode("utf-8")
+            adapter = vol_info.get("connection_info", {}).get("adapter")
+        helper = HELPER
+        if adapter:
+            helper = f"{HELPER}-{adapter}"
+            if not (
+                os.path.exists(helper) and os.access(helper, os.X_OK)
+            ):
+                raise se.ManagedVolumeHelperFailed(
+                    f"Helper for adapter '{adapter}' not found or"
+                    f" not executable at '{helper}'")
+        cmd = [helper, sub_cmd]
         result = commands.run(cmd, input=cmd_input)
     except cmdutils.Error as e:
         raise se.ManagedVolumeHelperFailed("Error executing helper: %s" % e)
@@ -234,6 +246,9 @@ def _resolve_path(vol_id, connection_info, attachment):
     elif vol_type == "rbd":
         # /dev/rbd/poolname/volume-vol-id
         return os.path.join(DEV_RBD, connection_info['data']['name'])
+    elif vol_type == "storpool":
+        # StorPool returns a full device path
+        return attachment["path"]
     else:
         log.warning("Managed Volume without multipath info: %s",
                     attachment)
