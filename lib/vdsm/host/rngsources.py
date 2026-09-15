@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import os.path
 
@@ -11,13 +8,14 @@ from vdsm.common.cache import memoized
 _SOURCES = {
     'random': '/dev/random',
     'urandom': '/dev/urandom',
-    'hwrng': '/dev/hwrng'
+    'hwrng': '/dev/hwrng',
 }
 
 
 def list_available():
     return [
-        source for (source, path) in _SOURCES.items()
+        source
+        for (source, path) in _SOURCES.items()
         if os.path.exists(path) and
         # REQUIRE_FOR: Engine <= 4.0
         source != 'urandom'

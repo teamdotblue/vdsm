@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from vdsm.common import commands
 from vdsm.tool.service import service_start, service_status, service_stop
@@ -13,8 +10,20 @@ el7_ovirt36_repo = 'http://resources.ovirt.org/pub/ovirt-3.6/rpm/el7/'
 
 def downgrade_vdsm(url):
     commands.run(['yum-config-manager', '--add-repo', url])
-    commands.run(['yum', 'swap', '--', 'erase', '-y', 'vdsm*',
-                 '--', 'install', '-y', 'vdsm-4.17.10.1-0.el7.centos.noarch'])
+    commands.run(
+        [
+            'yum',
+            'swap',
+            '--',
+            'erase',
+            '-y',
+            'vdsm*',
+            '--',
+            'install',
+            '-y',
+            'vdsm-4.17.10.1-0.el7.centos.noarch',
+        ]
+    )
 
 
 def upgrade_vdsm():

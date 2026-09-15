@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import json
 import marshal
@@ -109,18 +106,14 @@ class ProtectTests(VdsmTestCase):
 
 
 def dict_unprotected():
-    return {
-        "key": "value",
-        "_X_key": "secret",
-        "password": "12345678"
-    }
+    return {"key": "value", "_X_key": "secret", "password": "12345678"}
 
 
 def dict_protected():
     return {
         "key": "value",
         "_X_key": ProtectedPassword("secret"),
-        "password": ProtectedPassword("12345678")
+        "password": ProtectedPassword("12345678"),
     }
 
 
@@ -134,8 +127,8 @@ def nested_dicts_unprotected():
                 "key": "value",
                 "_X_key": "secret",
                 "password": "87654321",
-            }
-        }
+            },
+        },
     }
 
 
@@ -149,8 +142,8 @@ def nested_dicts_protected():
                 "key": "value",
                 "_X_key": ProtectedPassword("secret"),
                 "password": ProtectedPassword("87654321"),
-            }
-        }
+            },
+        },
     }
 
 
@@ -165,7 +158,7 @@ def lists_of_dicts_unprotected():
             "key": "value",
             "_X_key": "secret",
             "password": "87654321",
-        }
+        },
     ]
 
 
@@ -180,7 +173,7 @@ def lists_of_dicts_protected():
             "key": "value",
             "_X_key": ProtectedPassword("secret"),
             "password": ProtectedPassword("87654321"),
-        }
+        },
     ]
 
 
@@ -196,9 +189,9 @@ def nested_lists_of_dicts_unprotected():
                         "_X_key": "secret",
                         "password": "12345678",
                     }
-                ]
+                ],
             }
-        ]
+        ],
     }
 
 
@@ -214,7 +207,7 @@ def nested_lists_of_dicts_protected():
                         "_X_key": ProtectedPassword("secret"),
                         "password": ProtectedPassword("12345678"),
                     }
-                ]
+                ],
             }
-        ]
+        ],
     }

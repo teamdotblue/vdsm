@@ -1,10 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
-
-from __future__ import print_function
 import threading
 import time
 
@@ -149,8 +145,10 @@ class SchedulerTests(VdsmTestCase):
             avg = sum(ticker.latency) / len(ticker.latency)
             med = ticker.latency[len(ticker.latency) // 2]
             max = ticker.latency[-1]
-            print('latency - avg: %.3f min: %.3f median: %.3f max: %.3f' % (
-                avg, min, med, max))
+            print(
+                'latency - avg: %.3f min: %.3f median: %.3f max: %.3f'
+                % (avg, min, med, max)
+            )
             # This may be too strict on overloaded machines. We may need to
             # increase this value if it breaks in the CI.  On my laptop I get
             # avg latency 1 millisecond.

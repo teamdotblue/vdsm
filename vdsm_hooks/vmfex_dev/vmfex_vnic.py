@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
@@ -10,9 +10,6 @@ different events:
     * before_device_create
     * before_nic_hotplug
 """
-
-from __future__ import absolute_import
-from __future__ import print_function
 
 from xml.dom import minidom
 import fcntl

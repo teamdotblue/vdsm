@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import errno
 import io
@@ -124,8 +121,7 @@ class Connection(object):
         """
         fakelib_path = os.path.realpath(__file__)
         dir_name = os.path.split(fakelib_path)[0]
-        xml_path = os.path.join(
-            dir_name, 'devices', 'data', name + '.xml')
+        xml_path = os.path.join(dir_name, 'devices', 'data', name + '.xml')
 
         device_xml = None
         mode = 'r'

@@ -1,8 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 import errno
 import os
 
@@ -86,10 +84,7 @@ def get_persisted_files(files):
     """
     get files where vdsm is expected to add a section.
     """
-    return [
-        cfile['path'] for cfile in files.values()
-        if cfile['persisted']
-    ]
+    return [cfile['path'] for cfile in files.values() if cfile['persisted']]
 
 
 def open_config(path, conf_version):

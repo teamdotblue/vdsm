@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from vdsm import utils
 
@@ -31,8 +28,7 @@ def drive_config(conf, drive):
     # needed by live merge tracking.
     vol_chain = getattr(drive, 'volumeChain', [])
     ret_conf['volumeChain'] = [
-        utils.picklecopy(chain_item)
-        for chain_item in vol_chain
+        utils.picklecopy(chain_item) for chain_item in vol_chain
     ]
     return ret_conf
 

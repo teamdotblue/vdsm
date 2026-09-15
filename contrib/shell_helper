@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 # Useful VDSM helpers for developers. It supplies a few shorthands for common
@@ -148,7 +148,6 @@ del_ovs_bridges() {
 
 del_test_nets() {
     cat << EOF | sudo $PYTHON -
-from __future__ import print_function
 from vdsm.common import libvirtconnection
 c = libvirtconnection.get()
 nets = c.listAllNetworks(0)

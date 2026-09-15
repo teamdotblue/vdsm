@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
@@ -12,9 +12,6 @@ Usage:
     lvs-stats < lvs_-a_-o_lv_tags_devices_--config_global_locking_type_0
 
 """
-
-from __future__ import absolute_import
-from __future__ import print_function
 
 import collections
 import sys

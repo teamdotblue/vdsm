@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
 
 """
 This module provides a Scheduler class scheduling execution of
@@ -75,8 +73,9 @@ class Scheduler(object):
         self._cond = threading.Condition(threading.Lock())
         self._running = False
         self._calls = []
-        self._thread = concurrent.thread(self._run, name=self._name,
-                                         log=self._log)
+        self._thread = concurrent.thread(
+            self._run, name=self._name, log=self._log
+        )
 
     def start(self):
         self._log.debug("Starting scheduler %s", self._name)

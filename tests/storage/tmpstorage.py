@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import itertools
 import logging
@@ -11,7 +8,7 @@ import os
 from vdsm.common import commands
 from vdsm.common import cmdutils
 
-from . cleanup import CleanupError
+from .cleanup import CleanupError
 from . import loopback
 
 log = logging.getLogger("test")
@@ -72,10 +69,13 @@ class TemporaryStorage(object):
         tmp_devices = ",".join(self._devices)
         cmd = [
             "vgs",
-            "-o", "name",
+            "-o",
+            "name",
             "--noheadings",
-            "--devices", tmp_devices,
-            "--select", "pv_name = %s" % device.path
+            "--devices",
+            tmp_devices,
+            "--select",
+            "pv_name = %s" % device.path,
         ]
         vg_name = commands.run(cmd).strip().decode()
 

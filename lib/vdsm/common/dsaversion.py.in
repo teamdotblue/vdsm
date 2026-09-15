@@ -1,12 +1,10 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 This module provides DSA software versioning information for
 python based components
 """
-from __future__ import absolute_import
-from __future__ import division
 
 from vdsm import osinfo
 from vdsm.common import cache
@@ -15,7 +13,7 @@ from vdsm.common import cache
 version_name = "Snow Man"
 software_version = "@PACKAGE_BASE_VERSION@"
 software_revision = "@PACKAGE_BASE_RELEASE@"
-raw_version_revision = "@PACKAGE_VERSION@.@PACKAGE_RELEASE@"
+raw_version_revision = "@PACKAGE_VERSION@.@PACKAGE_RPM_RELEASE@"
 
 
 def _get_libvirt_version():

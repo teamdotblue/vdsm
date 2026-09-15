@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 
 DISK = 'disk'
@@ -21,4 +18,8 @@ TO_REFRESH = (
     NIC,  # needed by many network-related hooks (vmfex, ovn)
 )
 
-HOTPLUGGABLE = (DISK, NIC, LEASE,)
+HOTPLUGGABLE = (
+    DISK,
+    NIC,
+    LEASE,
+)

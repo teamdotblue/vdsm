@@ -1,11 +1,9 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 sysfs - helper for accessing sysfs attributes.
 """
-
-from __future__ import absolute_import
 
 import errno
 import io

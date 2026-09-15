@@ -1,11 +1,9 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 NFS helper module
 """
-
-from __future__ import absolute_import
 
 import errno
 import grp
@@ -149,8 +147,11 @@ def validateAccess(targetPath, perms=(os.R_OK | os.W_OK | os.X_OK)):
     Validate the RWX access to a given path
     """
     if not os.access(targetPath, perms):
-        log.warning("Permission denied for directory: %s with permissions: %s",
-                    targetPath, perms)
+        log.warning(
+            "Permission denied for directory: %s with permissions: %s",
+            targetPath,
+            perms,
+        )
         raise OSError(errno.EACCES, os.strerror(errno.EACCES))
 
 
@@ -158,11 +159,16 @@ def validateQemuReadable(targetPath):
     """
     Validate that qemu process can read file
     """
-    gids = (grp.getgrnam(constants.DISKIMAGE_GROUP).gr_gid,
-            grp.getgrnam(constants.METADATA_GROUP).gr_gid)
+    gids = (
+        grp.getgrnam(constants.DISKIMAGE_GROUP).gr_gid,
+        grp.getgrnam(constants.METADATA_GROUP).gr_gid,
+    )
     st = os.stat(targetPath)
-    if not (st.st_gid in gids and st.st_mode & stat.S_IRGRP or
-            st.st_mode & stat.S_IROTH):
+    if not (
+        st.st_gid in gids
+        and st.st_mode & stat.S_IRGRP
+        or st.st_mode & stat.S_IROTH
+    ):
         raise OSError(errno.EACCES, os.strerror(errno.EACCES))
 
 
@@ -208,8 +214,11 @@ def createdir(dirPath, mode=None):
     else:
         params = (dirPath,)
 
-    log.info("Creating directory: %s mode: %s", dirPath,
-             mode if mode is None else oct(mode))
+    log.info(
+        "Creating directory: %s mode: %s",
+        dirPath,
+        mode if mode is None else oct(mode),
+    )
     try:
         os.makedirs(*params)
     except OSError as e:
@@ -226,7 +235,8 @@ def createdir(dirPath, mode=None):
                 raise OSError(
                     errno.EPERM,
                     "Existing {} permissions {:o} are not as requested"
-                    " {:o}".format(dirPath, actual_mode, expected_mode))
+                    " {:o}".format(dirPath, actual_mode, expected_mode),
+                )
 
 
 def resolveUid(user):
@@ -257,8 +267,9 @@ def chown(path, user=-1, group=-1):
     currentUid = stat.st_uid
     currentGid = stat.st_gid
 
-    if ((uid == currentUid or user == -1) and
-            (gid == currentGid or group == -1)):
+    if (uid == currentUid or user == -1) and (
+        gid == currentGid or group == -1
+    ):
         return True
     log.info("Changing owner for %s, to (%s:%s)", path, uid, gid)
     os.chown(path, uid, gid)
@@ -286,10 +297,11 @@ def atomic_write(filename, data, mode=0o644, relabel=False):
         relabel (bool): If True, set selinux label.
     """
     with tempfile.NamedTemporaryFile(
-            mode="wb",
-            dir=os.path.dirname(filename),
-            prefix=os.path.basename(filename) + ".tmp",
-            delete=False) as tmp:
+        mode="wb",
+        dir=os.path.dirname(filename),
+        prefix=os.path.basename(filename) + ".tmp",
+        delete=False,
+    ) as tmp:
         try:
             tmp.write(data)
             tmp.flush()

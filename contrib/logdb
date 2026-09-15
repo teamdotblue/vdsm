@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
@@ -8,9 +8,6 @@ Usage: logdb dbname logfile ...
 
 Import vdsm log files into log database dbname.
 """
-
-from __future__ import absolute_import
-from __future__ import print_function
 
 import sqlite3
 import sys

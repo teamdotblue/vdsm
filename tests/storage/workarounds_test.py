@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from testlib import make_uuid
 from testlib import VdsmTestCase
@@ -36,7 +33,8 @@ class TestDetectFormat(VdsmTestCase):
         """
         with fake_file_env() as env:
             vol = make_volume(
-                env, workarounds.VM_CONF_SIZE, md_fmt='cow', real_fmt='raw')
+                env, workarounds.VM_CONF_SIZE, md_fmt='cow', real_fmt='raw'
+            )
             self.assertTrue(workarounds.invalid_vm_conf_disk(vol))
 
     def test_bad_format_other_size(self):
@@ -55,5 +53,6 @@ class TestDetectFormat(VdsmTestCase):
         """
         with fake_file_env() as env:
             vol = make_volume(
-                env, workarounds.VM_CONF_SIZE, md_fmt='cow', real_fmt='cow')
+                env, workarounds.VM_CONF_SIZE, md_fmt='cow', real_fmt='cow'
+            )
             self.assertFalse(workarounds.invalid_vm_conf_disk(vol))

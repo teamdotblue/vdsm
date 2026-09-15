@@ -1,7 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
 import threading
 
 
@@ -96,8 +95,10 @@ class RWLock(object):
     def release(self):
         me = threading.current_thread()
         if me not in self._holders:
-            raise RuntimeError("Thread %s attempted to release a lock it "
-                               "does not hold" % me)
+            raise RuntimeError(
+                "Thread %s attempted to release a lock it "
+                "does not hold" % me
+            )
         self._holders[me] -= 1
         if self._holders[me] > 0:
             return

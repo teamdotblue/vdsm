@@ -1,12 +1,9 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 Common fixtures that can be used without importing anything.
 """
-
-from __future__ import absolute_import
-from __future__ import division
 
 import pytest
 

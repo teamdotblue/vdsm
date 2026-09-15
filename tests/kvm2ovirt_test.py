@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from collections import namedtuple
 from contextlib import contextmanager
@@ -52,18 +49,30 @@ class TestKvm2Ovirt(TestCaseBase):
         def connect(uri, username, password):
             return conn
 
-        with MonkeyPatchScope([
-            (libvirtconnection, 'open_connection', connect),
-        ]), make_env() as env:
-            args = ['kvm2ovirt',
-                    '--uri', 'qemu+tcp://domain',
-                    '--username', 'user',
-                    '--password-file', env.password,
-                    '--source', '/fake/source',
-                    '--dest', env.destination,
-                    '--storage-type', 'volume',
-                    '--vm-name', self._vms[0].name(),
-                    '--allocation', 'sparse']
+        with MonkeyPatchScope(
+            [
+                (libvirtconnection, 'open_connection', connect),
+            ]
+        ), make_env() as env:
+            args = [
+                'kvm2ovirt',
+                '--uri',
+                'qemu+tcp://domain',
+                '--username',
+                'user',
+                '--ip',
+                env.password,
+                '--source',
+                '/fake/source',
+                '--dest',
+                env.destination,
+                '--storage-type',
+                'volume',
+                '--vm-name',
+                self._vms[0].name(),
+                '--allocation',
+                'sparse',
+            ]
 
             kvm2ovirt.main(args)
 
@@ -77,18 +86,30 @@ class TestKvm2Ovirt(TestCaseBase):
         def connect(uri, username, password):
             return conn
 
-        with MonkeyPatchScope([
-            (libvirtconnection, 'open_connection', connect),
-        ]), make_env() as env:
-            args = ['kvm2ovirt',
-                    '--uri', 'qemu+tcp://domain',
-                    '--username', 'user',
-                    '--password-file', env.password,
-                    '--source', '/fake/source',
-                    '--dest', env.destination,
-                    '--storage-type', 'path',
-                    '--vm-name', self._vms[0].name(),
-                    '--allocation', 'preallocated']
+        with MonkeyPatchScope(
+            [
+                (libvirtconnection, 'open_connection', connect),
+            ]
+        ), make_env() as env:
+            args = [
+                'kvm2ovirt',
+                '--uri',
+                'qemu+tcp://domain',
+                '--username',
+                'user',
+                '--ip',
+                env.password,
+                '--source',
+                '/fake/source',
+                '--dest',
+                env.destination,
+                '--storage-type',
+                'path',
+                '--vm-name',
+                self._vms[0].name(),
+                '--allocation',
+                'preallocated',
+            ]
 
             kvm2ovirt.main(args)
 
@@ -96,22 +117,32 @@ class TestKvm2Ovirt(TestCaseBase):
                 actual = f.read()
             self.assertEqual(actual, FakeVolume().data())
 
-    @permutations([
-                  [None, None],
-                  ['root', 'passwd'],
-                  ])
+    @permutations(
+        [
+            [None, None],
+            ['root', 'passwd'],
+        ]
+    )
     def test_common_download_file_username(self, username, passwd):
         conn = MockVirConnect(vms=self._vms)
 
         def connect(uri, username, password):
             return conn
 
-        with MonkeyPatchScope([
-            (libvirtconnection, 'open_connection', connect),
-        ]), make_env() as env:
+        with MonkeyPatchScope(
+            [
+                (libvirtconnection, 'open_connection', connect),
+            ]
+        ), make_env() as env:
             vmInfo = {'vmName': self._vms[0].name()}
-            kvm = v2v.KVMCommand('qemu+tcp://domain', username, passwd,
-                                 vmInfo, uuid.uuid4(), None)
+            kvm = v2v.KVMCommand(
+                'qemu+tcp://domain',
+                username,
+                passwd,
+                vmInfo,
+                uuid.uuid4(),
+                None,
+            )
             if passwd:
                 kvm._passwd_file = env.password
             kvm._source_images = lambda: (['/fake/source'], ['file'])

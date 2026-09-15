@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import copy
 
@@ -11,6 +8,7 @@ class ProtectedPassword(object):
     """
     Protect a password so it will not be logged or serialized by mistake.
     """
+
     def __init__(self, value):
         self.value = value
 
@@ -68,8 +66,11 @@ def unprotect(obj):
 def _walk(obj):
     if isinstance(obj, dict):
         for key, value in obj.items():
-            if key == "password" or \
-               isinstance(key, str) and key.startswith("_X_"):
+            if (
+                key == "password"
+                or isinstance(key, str)
+                and key.startswith("_X_")
+            ):
                 yield obj, key, value
             elif isinstance(value, (dict, list)):
                 for d, k, v in _walk(value):

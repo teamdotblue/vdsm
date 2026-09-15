@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import collections
 
@@ -16,7 +13,10 @@ from vdsm.storage import sd
 
 
 EXAMPLE_DATA = {
-    (sc.BLOCK_SIZE_512, sc.ALIGNMENT_1M): """\
+    (
+        sc.BLOCK_SIZE_512,
+        sc.ALIGNMENT_1M,
+    ): """\
 ALIGNMENT=1048576
 BLOCK_SIZE=512
 CLASS=Data
@@ -34,7 +34,10 @@ TYPE=LOCALFS
 VERSION=5
 _SHA_CKSUM=9336f77705ff9e3d5faf65c4d0dc818a29de458d
 """,
-    (sc.BLOCK_SIZE_4K, sc.ALIGNMENT_1M): """\
+    (
+        sc.BLOCK_SIZE_4K,
+        sc.ALIGNMENT_1M,
+    ): """\
 ALIGNMENT=1048576
 BLOCK_SIZE=4096
 CLASS=Data
@@ -52,7 +55,10 @@ TYPE=LOCALFS
 VERSION=5
 _SHA_CKSUM=7910a564cc0a340f93aea5680e0e9c2d6ff4903a
 """,
-    (sc.BLOCK_SIZE_4K, sc.ALIGNMENT_2M): """\
+    (
+        sc.BLOCK_SIZE_4K,
+        sc.ALIGNMENT_2M,
+    ): """\
 ALIGNMENT=2097152
 BLOCK_SIZE=4096
 CLASS=Data
@@ -79,14 +85,10 @@ Storage = collections.namedtuple("Storage", "path, block_size, alignment")
 @pytest.fixture(
     params=[
         pytest.param(
-            (BACKENDS["file-512"], sc.ALIGNMENT_1M),
-            id="file-512-1m"),
-        pytest.param(
-            (BACKENDS["file-4k"], sc.ALIGNMENT_1M),
-            id="file-4k-1m"),
-        pytest.param(
-            (BACKENDS["file-4k"], sc.ALIGNMENT_2M),
-            id="file-4k-2m"),
+            (BACKENDS["file-512"], sc.ALIGNMENT_1M), id="file-512-1m"
+        ),
+        pytest.param((BACKENDS["file-4k"], sc.ALIGNMENT_1M), id="file-4k-1m"),
+        pytest.param((BACKENDS["file-4k"], sc.ALIGNMENT_2M), id="file-4k-2m"),
     ],
 )
 def storage(request):
@@ -111,8 +113,9 @@ def make_metadata(storage):
         sd.DMDK_LEASE_RETRIES: lease[sd.DMDK_LEASE_RETRIES],
         sd.DMDK_LEASE_TIME_SEC: lease[sd.DMDK_LEASE_TIME_SEC],
         sd.DMDK_LOCK_POLICY: "",
-        sd.DMDK_LOCK_RENEWAL_INTERVAL_SEC:
-            lease[sd.DMDK_LOCK_RENEWAL_INTERVAL_SEC],
+        sd.DMDK_LOCK_RENEWAL_INTERVAL_SEC: lease[
+            sd.DMDK_LOCK_RENEWAL_INTERVAL_SEC
+        ],
         sd.DMDK_POOLS: [],
         sd.DMDK_ROLE: sd.REGULAR_DOMAIN,
         sd.DMDK_SDUUID: "275766cb-c7d8-43d6-a663-4e52160de620",

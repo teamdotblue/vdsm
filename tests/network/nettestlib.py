@@ -1,8 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 import fcntl
 import os
 import shutil
@@ -487,14 +485,6 @@ def running_on_centos_stream(ver=''):
 def running_on_fedora(ver=''):
     with open('/etc/redhat-release') as f:
         return 'Fedora release {}'.format(ver) in f.readline()
-
-
-def running_on_travis_ci():
-    return 'TRAVIS_CI' in os.environ
-
-
-def running_on_ovirt_ci():
-    return 'CI' in os.environ or 'OVIRT_CI' in os.environ
 
 
 class FakeNotifier:

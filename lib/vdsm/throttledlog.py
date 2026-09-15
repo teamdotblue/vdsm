@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
 
 import logging
 
@@ -31,8 +29,7 @@ class _Periodic(object):
         return result
 
     def _result(self, now):
-        return (self._counter == 0 or
-                (now - self._last_time) >= self._timeout)
+        return self._counter == 0 or (now - self._last_time) >= self._timeout
 
 
 def throttle(name, interval, timeout=_DEFAULT_TIMEOUT_SEC):

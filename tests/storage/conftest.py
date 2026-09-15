@@ -1,12 +1,9 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 Common fixtures that can be used without importing anything.
 """
-
-from __future__ import absolute_import
-from __future__ import division
 
 import logging
 import os
@@ -127,8 +124,12 @@ def tmp_storage(monkeypatch, tmpdir):
             # and don't break other tests.
             lvm.invalidateCache()
             stats = lvm.cache_stats()
-            log.info("LVM cache hit ratio: %.2f%% (hits: %d misses: %d)",
-                     stats["hit_ratio"], stats["hits"], stats["misses"])
+            log.info(
+                "LVM cache hit ratio: %.2f%% (hits: %d misses: %d)",
+                stats["hit_ratio"],
+                stats["hits"],
+                stats["misses"],
+            )
 
 
 @pytest.fixture(
@@ -152,6 +153,7 @@ def fake_access(monkeypatch):
     Returned object has a "allowed" attribute set to True to make access check
     succeed. To make access check fail, set it to False.
     """
+
     class fake_access:
         allowed = True
 
@@ -174,6 +176,7 @@ def fake_rescan(monkeypatch):
     """
     Fake rescanning of devices. Do nothing instead.
     """
+
     def rescan():
         pass
 

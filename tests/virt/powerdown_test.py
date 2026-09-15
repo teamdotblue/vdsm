@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import threading
 import logging
@@ -27,9 +24,7 @@ class PowerDownTests(TestCaseBase):
     @brokentest("cannot disable QEMU GA callback")
     def test_no_callbacks(self):
         vm = FakeVM(
-            self.dom,
-            FakeGuestAgent(responsive=False),
-            acpiEnable='false'
+            self.dom, FakeGuestAgent(responsive=False), acpiEnable='false'
         )
         obj = make_object('VmPowerDown', vm, self.event)
         res = obj.start()
@@ -37,9 +32,7 @@ class PowerDownTests(TestCaseBase):
 
     def test_with_default_callbacks(self):
         vm = FakeVM(
-            self.dom,
-            FakeGuestAgent(responsive=True),
-            acpiEnable='true'
+            self.dom, FakeGuestAgent(responsive=True), acpiEnable='true'
         )
         obj = make_object('VmPowerDown', vm, self.event)
         # no actual callback will be called now!
@@ -48,13 +41,10 @@ class PowerDownTests(TestCaseBase):
 
     def test_with_forced_callback(self):
         vm = FakeVM(
-            self.dom,
-            FakeGuestAgent(responsive=True),
-            acpiEnable='true'
+            self.dom, FakeGuestAgent(responsive=True), acpiEnable='true'
         )
         obj = make_object('VmPowerDown', vm, self.event, force=True)
-        assert obj.forceCallback in \
-            [cb.func for cb in obj.chain.callbacks]
+        assert obj.forceCallback in [cb.func for cb in obj.chain.callbacks]
 
 
 class ShutdownTests(TestCaseBase):
@@ -65,9 +55,7 @@ class ShutdownTests(TestCaseBase):
 
     def test_qemu_guest_agent_callback_unresponsive(self):
         vm = FakeVM(
-            self.dom,
-            FakeGuestAgent(responsive=False),
-            acpiEnable='true'
+            self.dom, FakeGuestAgent(responsive=False), acpiEnable='true'
         )
         obj = make_object('VmShutdown', vm, self.event)
         assert not obj.qemuGuestAgentCallback()
@@ -81,9 +69,7 @@ class RebootTests(TestCaseBase):
 
     def test_qemu_guest_agent_callback_unresponsive(self):
         vm = FakeVM(
-            self.dom,
-            FakeGuestAgent(responsive=False),
-            acpiEnable='true'
+            self.dom, FakeGuestAgent(responsive=False), acpiEnable='true'
         )
         obj = make_object('VmReboot', vm, self.event)
         assert not obj.qemuGuestAgentCallback()

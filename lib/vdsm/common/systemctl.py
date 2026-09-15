@@ -1,12 +1,9 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 systemctl - wrapper for systemctl command.
 """
-
-from __future__ import absolute_import
-from __future__ import division
 
 import os
 
@@ -95,5 +92,7 @@ def _parse_properties(out):
         return []
 
     # Some matches - parse the lines.
-    return [dict(pair.split("=", 1) for pair in unit.split("\n"))
-            for unit in out.split("\n\n")]
+    return [
+        dict(pair.split("=", 1) for pair in unit.split("\n"))
+        for unit in out.split("\n\n")
+    ]

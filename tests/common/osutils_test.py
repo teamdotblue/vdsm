@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import errno
 import fcntl
@@ -31,6 +28,7 @@ class TestUninterruptiblePoll(TestCaseBase):
         def _repeatFakeSigchld():
             for i in range(self.RETRIES):
                 self._waitAndSigchld()
+
         intrThread = threading.Thread(target=_repeatFakeSigchld)
         intrThread.setDaemon(True)
         intrThread.start()
@@ -80,8 +78,9 @@ class TestUninterruptiblePoll(TestCaseBase):
         intrThread.start()
 
         try:
-            self.assertTrue(len(
-                osutils.uninterruptible_poll(poller.poll, -1)) > 0)
+            self.assertTrue(
+                len(osutils.uninterruptible_poll(poller.poll, -1)) > 0
+            )
         finally:
             os.close(myPipe)
 

@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import contextlib
 import os
@@ -17,14 +14,16 @@ class TerminationException(Exception):
 
 
 class LibvirtMock(object):
-    VIR_CRED_AUTHNAME, \
-        VIR_CRED_PASSPHRASE, \
-        VIR_FROM_RPC, \
-        VIR_FROM_REMOTE, \
-        VIR_ERR_SYSTEM_ERROR, \
-        VIR_ERR_INTERNAL_ERROR, \
-        VIR_ERR_NO_CONNECT, \
-        VIR_ERR_INVALID_CONN = list(range(8))
+    (
+        VIR_CRED_AUTHNAME,
+        VIR_CRED_PASSPHRASE,
+        VIR_FROM_RPC,
+        VIR_FROM_REMOTE,
+        VIR_ERR_SYSTEM_ERROR,
+        VIR_ERR_INTERNAL_ERROR,
+        VIR_ERR_NO_CONNECT,
+        VIR_ERR_INVALID_CONN,
+    ) = list(range(8))
 
     SOME_ERROR_LEVEL = 3
 
@@ -117,8 +116,9 @@ class testLibvirtconnection(TestCaseBase):
             connection = libvirtconnection.get(killOnFailure=True)
             LibvirtMock.virConnect.failNodeDeviceLookupByName = True
             LibvirtMock.virConnect.failGetLibVersion = False
-            self.assertRaises(LibvirtMock.libvirtError,
-                              connection.nodeDeviceLookupByName)
+            self.assertRaises(
+                LibvirtMock.libvirtError, connection.nodeDeviceLookupByName
+            )
 
     @MonkeyPatch(libvirtconnection, 'libvirt', LibvirtMock())
     @MonkeyPatch(os, 'kill', _kill)
@@ -135,5 +135,6 @@ class testLibvirtconnection(TestCaseBase):
             connection = libvirtconnection.get(killOnFailure=True)
             LibvirtMock.virConnect.failNodeDeviceLookupByName = True
             LibvirtMock.virConnect.failGetLibVersion = True
-            self.assertRaises(TerminationException,
-                              connection.nodeDeviceLookupByName)
+            self.assertRaises(
+                TerminationException, connection.nodeDeviceLookupByName
+            )

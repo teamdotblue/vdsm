@@ -1,15 +1,12 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import pytest
 
 from vdsm.common import cmdutils
 from vdsm.storage import multipath
 
-from . marks import requires_root
+from .marks import requires_root
 
 MULTIPATHD_SCRIPT = """\
 #!/bin/sh
@@ -81,7 +78,7 @@ def fake_multipathd(monkeypatch, fake_executable):
     monkeypatch.setattr(
         multipath,
         "_MULTIPATHD",
-        cmdutils.CommandPath("fake-multipathd", str(fake_executable))
+        cmdutils.CommandPath("fake-multipathd", str(fake_executable)),
     )
 
     return fake_executable
@@ -92,7 +89,7 @@ def fake_scsi_id(monkeypatch, fake_executable):
     monkeypatch.setattr(
         multipath,
         "_SCSI_ID",
-        cmdutils.CommandPath("fake-scsi_id", str(fake_executable))
+        cmdutils.CommandPath("fake-scsi_id", str(fake_executable)),
     )
 
     return fake_executable

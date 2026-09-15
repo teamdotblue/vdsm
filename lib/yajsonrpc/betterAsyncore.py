@@ -1,13 +1,10 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-FileCopyrightText: 2014-2017 Saggi Mizrahi
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 # Asyncore uses inheritance all around which makes it not flexible enough for
 # us to use. This does tries to reuse enough code from the original asyncore
 # while enabling compositing instead of inheritance.
-from __future__ import absolute_import
-from __future__ import division
-
 import asyncore
 import errno
 import logging
@@ -17,9 +14,12 @@ import ssl
 from vdsm import sslutils
 from vdsm.common.eventfd import EventFD
 
-
-_BLOCKING_IO_ERRORS = (errno.EAGAIN, errno.EALREADY, errno.EINPROGRESS,
-                       errno.EWOULDBLOCK)
+_BLOCKING_IO_ERRORS = (
+    errno.EAGAIN,
+    errno.EALREADY,
+    errno.EINPROGRESS,
+    errno.EWOULDBLOCK,
+)
 
 
 class Dispatcher(asyncore.dispatcher):
@@ -96,8 +96,13 @@ class Dispatcher(asyncore.dispatcher):
         if self.__impl and hasattr(self.__impl, 'setHeartBeat'):
             self.__impl.setHeartBeat(outgoing, incoming)
 
-    def create_socket(self, addr, sslctx=None, family=socket.AF_UNSPEC,
-                      type=socket.SOCK_STREAM):
+    def create_socket(
+        self,
+        addr,
+        sslctx=None,
+        family=socket.AF_UNSPEC,
+        type=socket.SOCK_STREAM,
+    ):
         addrinfo = socket.getaddrinfo(addr[0], addr[1], family, type)
         self.family_and_type = family, type
         family, socktype, proto, _, sockaddr = addrinfo[0]
@@ -183,9 +188,7 @@ class AsyncoreEvent(asyncore.file_dispatcher):
         self._eventfd = EventFD()
         try:
             asyncore.file_dispatcher.__init__(
-                self,
-                self._eventfd.fileno(),
-                map=map
+                self, self._eventfd.fileno(), map=map
             )
         except:
             self._eventfd.close()

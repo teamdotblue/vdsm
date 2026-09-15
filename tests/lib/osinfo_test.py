@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import pytest
 import tempfile
@@ -21,7 +18,7 @@ kernel_args = [
     (b'\n', ''),
     (b'a', 'a'),
     (b'a\n', 'a'),
-    (b'a\nb', 'a')
+    (b'a\nb', 'a'),
 ]
 
 
@@ -49,8 +46,9 @@ def test_get_boot_uuid(fake_findmnt):
     # output.
     echo '{}'
     """
-    fake_findmnt.write(fake_script
-                       .format("f3d3c716-54a0-4cd8-8ee1-d49f88e9cb11\n"))
+    fake_findmnt.write(
+        fake_script.format("f3d3c716-54a0-4cd8-8ee1-d49f88e9cb11\n")
+    )
     assert osinfo.boot_uuid() == "f3d3c716-54a0-4cd8-8ee1-d49f88e9cb11"
 
 

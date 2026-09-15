@@ -1,8 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 """
 profiling facade.
 """
@@ -26,6 +24,6 @@ def status():
     for profiler in (cpu, memory):
         res[profiler.__name__] = {
             "enabled": profiler.is_enabled(),
-            "running": profiler.is_running()
+            "running": profiler.is_running(),
         }
     return res

@@ -1,8 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 import errno
 import os
 import time
@@ -57,5 +55,7 @@ class TestUniterruptible(VdsmTestCase):
         def func(*args, **kwargs):
             return args, kwargs
 
-        self.assertEqual(osutils.uninterruptible(func, "a", "b", c=3),
-                         (("a", "b"), {"c": 3}))
+        self.assertEqual(
+            osutils.uninterruptible(func, "a", "b", c=3),
+            (("a", "b"), {"c": 3}),
+        )

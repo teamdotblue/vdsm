@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
 
 from vdsm.storage import guarded
 from vdsm.storage import validators
@@ -19,5 +17,6 @@ class Job(base.Job):
 
     def _run(self):
         with guarded.context(self._endpoint.locks):
-            self._endpoint.volume.update_attributes(self._endpoint.generation,
-                                                    self._vol_attr)
+            self._endpoint.volume.update_attributes(
+                self._endpoint.generation, self._vol_attr
+            )

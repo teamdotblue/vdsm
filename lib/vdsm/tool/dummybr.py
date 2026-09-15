@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import os
 
@@ -17,13 +14,11 @@ EXT_IP = '/usr/sbin/ip'
 
 
 def createEphemeralBridge(bridgeName):
-    commands.run([
-        EXT_IP, 'link', 'add', bridgeName, 'type', 'bridge'])
+    commands.run([EXT_IP, 'link', 'add', bridgeName, 'type', 'bridge'])
 
 
 def removeEphemeralBridge(bridgeName):
-    commands.run([
-        EXT_IP, 'link', 'del', bridgeName, 'type', 'bridge'])
+    commands.run([EXT_IP, 'link', 'del', bridgeName, 'type', 'bridge'])
 
 
 def addBridgeToLibvirt(bridgeName):
@@ -31,7 +26,8 @@ def addBridgeToLibvirt(bridgeName):
     if bridgeName not in conn.listNetworks():
         conn.networkCreateXML(
             '''<network><name>%s</name><forward mode='bridge'/><bridge '''
-            '''name='%s'/></network>''' % (bridgeName, bridgeName))
+            '''name='%s'/></network>''' % (bridgeName, bridgeName)
+        )
 
 
 def removeBridgeFromLibvirt(bridgeName):

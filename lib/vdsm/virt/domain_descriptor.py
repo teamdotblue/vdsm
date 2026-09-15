@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from contextlib import contextmanager
 import enum
@@ -62,8 +59,10 @@ class MutableDomainDescriptor(object):
 
     def get_device_elements_with_attrs(self, tag_name, **kwargs):
         for element in vmxml.find_all(self.devices, tag_name):
-            if all(vmxml.attr(element, key) == value
-                    for key, value in kwargs.items()):
+            if all(
+                vmxml.attr(element, key) == value
+                for key, value in kwargs.items()
+            ):
                 yield element
 
     @contextmanager
@@ -188,8 +187,10 @@ class DomainDescriptor(MutableDomainDescriptor):
         self._xml = xmlStr
         self._xml_source = xml_source
         self._devices = super(DomainDescriptor, self).devices
-        if self._xml_source == XmlSource.INITIAL or \
-                self._xml_source == XmlSource.MIGRATION_SOURCE:
+        if (
+            self._xml_source == XmlSource.INITIAL
+            or self._xml_source == XmlSource.MIGRATION_SOURCE
+        ):
             self._devices_hash = None
         else:
             self._devices_hash = super(DomainDescriptor, self).devices_hash

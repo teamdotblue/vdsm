@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import pstats
 import time
@@ -35,13 +32,15 @@ def requires_yappi():
 @contextmanager
 def env(enable='true', format='pstat', clock='cpu', builtins='false'):
     with temporaryPath() as filename:
-        config = make_config([
-            ('devel', 'cpu_profile_enable', enable),
-            ('devel', 'cpu_profile_filename', filename),
-            ('devel', 'cpu_profile_format', format),
-            ('devel', 'cpu_profile_clock', clock),
-            ('devel', 'cpu_profile_builtins', builtins),
-        ])
+        config = make_config(
+            [
+                ('devel', 'cpu_profile_enable', enable),
+                ('devel', 'cpu_profile_filename', filename),
+                ('devel', 'cpu_profile_format', format),
+                ('devel', 'cpu_profile_clock', clock),
+                ('devel', 'cpu_profile_builtins', builtins),
+            ]
+        )
         with MonkeyPatchScope([(cpu, 'config', config)]):
             yield filename
 
@@ -313,6 +312,7 @@ class ThreadsProfileTests(VdsmTestCase):
 
 
 # Helpers
+
 
 def open_ystats(filename):
     stats = yappi.YFuncStats()

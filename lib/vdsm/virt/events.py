@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import libvirt
 
@@ -16,7 +13,7 @@ LIBVIRT_EVENTS = {
     libvirt.VIR_DOMAIN_EVENT_GRAPHICS_INITIALIZE: 'GRAPHICS_INITIALIZE',
     libvirt.VIR_DOMAIN_EVENT_GRAPHICS_DISCONNECT: 'GRAPHICS_DISCONNECT',
     libvirt.VIR_DOMAIN_EVENT_ID_WATCHDOG: 'WATCHDOG',
-    libvirt.VIR_DOMAIN_EVENT_ID_JOB_COMPLETED: 'JOB_COMPLETED'
+    libvirt.VIR_DOMAIN_EVENT_ID_JOB_COMPLETED: 'JOB_COMPLETED',
 }
 
 

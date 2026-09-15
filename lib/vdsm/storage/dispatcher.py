@@ -1,14 +1,11 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
 
 import logging
 from functools import wraps
 
 from vdsm.storage import exception as se
 from vdsm.storage import task
-
 
 _EXPORTED_ATTRIBUTE = "__dispatcher_exported__"
 
@@ -40,8 +37,10 @@ class Dispatcher(object):
             funcObj = getattr(obj, funcName)
             if hasattr(funcObj, _EXPORTED_ATTRIBUTE) and callable(funcObj):
                 if hasattr(self, funcName):
-                    self.log.error("StorageDispatcher: init - multiple public"
-                                   " functions with same name: %s" % funcName)
+                    self.log.error(
+                        "StorageDispatcher: init - multiple public"
+                        " functions with same name: %s" % funcName
+                    )
                     continue
                 # Create a new entry in instance's "dict" that will mask the
                 # original method
@@ -69,11 +68,14 @@ class Dispatcher(object):
                     # Match api.method format
                     self.log.exception("FINISH %s error=%s", name, e)
                     defaultException = ctask.defaultException
-                    if (defaultException and
-                            hasattr(defaultException, "response")):
+                    if defaultException and hasattr(
+                        defaultException, "response"
+                    ):
                         resp = defaultException.response()
-                        defaultExceptionInfo = (resp['status']['code'],
-                                                resp['status']['message'])
+                        defaultExceptionInfo = (
+                            resp['status']['code'],
+                            resp['status']['message'],
+                        )
                         return se.generateResponse(e, defaultExceptionInfo)
 
                     return se.generateResponse(e)
@@ -82,7 +84,10 @@ class Dispatcher(object):
                     # We should never reach this
                     self.log.exception(
                         "Unhandled exception (name=%s, args=%s, kwargs=%s)",
-                        name, args, kwargs)
+                        name,
+                        args,
+                        kwargs,
+                    )
                 finally:
                     return self.STATUS_ERROR.copy()
 

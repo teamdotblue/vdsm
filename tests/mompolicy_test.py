@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import json
 import os
@@ -20,13 +17,15 @@ def setupModule():
 
 def read_vm_controls(host_data, vm_data, *policy_files):
     cmd = [
-        'python', MOM_POLICY_VALIDATOR,
+        'python',
+        MOM_POLICY_VALIDATOR,
         json.dumps(host_data),
         json.dumps(vm_data),
     ]
     cmd.extend(
         os.path.join('../static/etc/vdsm/mom.d/', pfile)
-        for pfile in policy_files)
+        for pfile in policy_files
+    )
     out = subprocess.check_output(cmd)
     return json.loads(out)
 

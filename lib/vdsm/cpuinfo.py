@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
 
 import re
 
@@ -10,10 +8,10 @@ from collections import namedtuple
 from vdsm.common import cache
 from vdsm.common import cpuarch
 
-
 _PATH = '/proc/cpuinfo'
-CpuInfo = namedtuple('CpuInfo', 'flags, frequency, model, ppcmodel, platform,'
-                     'machine')
+CpuInfo = namedtuple(
+    'CpuInfo', 'flags, frequency, model, ppcmodel, platform,' 'machine'
+)
 
 
 @cache.memoized

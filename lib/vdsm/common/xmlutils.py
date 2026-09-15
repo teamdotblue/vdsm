@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import copy
 import io
@@ -27,7 +24,8 @@ def tostring(element, pretty=False):
     # found in python 3.6
     stream = io.BytesIO()
     etree.ElementTree(element).write(
-        stream, encoding='utf-8', xml_declaration=True)
+        stream, encoding='utf-8', xml_declaration=True
+    )
     return stream.getvalue().decode('utf-8')
 
 

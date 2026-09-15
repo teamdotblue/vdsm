@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 #
@@ -12,8 +12,6 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-
-from __future__ import absolute_import
 
 import os
 import sys
@@ -45,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Vdsm'
-copyright = u'2009-2016, Red Hat'
+copyright = u'2009-2026, oVirt Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

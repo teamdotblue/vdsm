@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 '''
@@ -12,8 +12,6 @@ Syntax:
     { 'vmId': 'VM_ID', 'vnic_id': 'port_id' }
 Where:
     VM_ID should be replaced with the vm id.'''
-
-from __future__ import absolute_import
 
 import libvirt
 import os

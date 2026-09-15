@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from contextlib import contextmanager
 
@@ -10,7 +7,7 @@ from vdsm.storage import outOfProcess as oop
 from vdsm.storage import task
 from vdsm.storage import taskManager
 
-from . storagetestlib import Callable
+from .storagetestlib import Callable
 
 
 WAIT_TIMEOUT = 5  # Used for task done or hang timeout

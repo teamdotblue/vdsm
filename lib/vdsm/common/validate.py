@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from vdsm.common import exception
 
@@ -54,5 +51,5 @@ def normalize_pci_address(domain, bus, slot, function):
         'domain': '{:0=#06x}'.format(int(domain, base=base)),
         'bus': '{:0=#04x}'.format(int(bus, base=base)),
         'slot': '{:0=#04x}'.format(int(slot, base=base)),
-        'function': '{:0=#02x}'.format(int(function, base=base))
+        'function': '{:0=#02x}'.format(int(function, base=base)),
     }

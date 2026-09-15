@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from collections import deque
 import threading
@@ -22,8 +19,6 @@ from vdsm.network.sysctl import is_disabled_ipv6
 
 from network.nettestlib import Bond
 from network.nettestlib import IpFamily
-from network.nettestlib import running_on_ovirt_ci
-
 
 IP_ADDRESS = '192.0.2.1'
 IP_CIDR = '24'
@@ -133,12 +128,6 @@ class TestNetlinkEventMonitor(object):
             while True:
                 next(iterator)
 
-    @pytest.mark.xfail(
-        condition=running_on_ovirt_ci(),
-        raises=AssertionError,
-        reason='Sometimes we miss some events on CI',
-        strict=False,
-    )
     def test_events_keys(self):
         def _simplify_event(event):
             """Strips event keys except event, address, name, destination,

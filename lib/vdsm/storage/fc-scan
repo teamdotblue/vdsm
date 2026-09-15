@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
@@ -19,10 +19,6 @@ Exit codes:
   0         scanned fc_hosts and devices successfully
   1         scanning some hosts or devices failed
 """
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import glob
 import logging

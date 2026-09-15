@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
 
 import os
 from glob import glob
@@ -36,7 +34,10 @@ class LocalFsStorageDomain(fileSD.FileStorageDomain):
     manifestClass = LocalFsStorageDomainManifest
 
     supported_block_size = (
-        sc.BLOCK_SIZE_AUTO, sc.BLOCK_SIZE_512, sc.BLOCK_SIZE_4K)
+        sc.BLOCK_SIZE_AUTO,
+        sc.BLOCK_SIZE_512,
+        sc.BLOCK_SIZE_4K,
+    )
 
     @property
     def supportsMailbox(self):
@@ -58,9 +59,17 @@ class LocalFsStorageDomain(fileSD.FileStorageDomain):
             raise se.StorageDomainNotEmpty(typeSpecificArg)
 
     @classmethod
-    def create(cls, sdUUID, domainName, domClass, remotePath, storageType,
-               version, block_size=sc.BLOCK_SIZE_512,
-               max_hosts=sc.HOSTS_4K_1M):
+    def create(
+        cls,
+        sdUUID,
+        domainName,
+        domClass,
+        remotePath,
+        storageType,
+        version,
+        block_size=sc.BLOCK_SIZE_512,
+        max_hosts=sc.HOSTS_4K_1M,
+    ):
         """
         Create new storage domain
 
@@ -91,14 +100,23 @@ class LocalFsStorageDomain(fileSD.FileStorageDomain):
 
         storage_block_size = cls._detect_block_size(sdUUID, mntPoint)
         block_size = cls._validate_storage_block_size(
-            block_size, storage_block_size)
+            block_size, storage_block_size
+        )
 
         alignment = clusterlock.alignment(block_size, max_hosts)
 
         domainDir = os.path.join(mntPoint, sdUUID)
-        cls._prepareMetadata(domainDir, sdUUID, domainName, domClass,
-                             remotePath, storageType, version, alignment,
-                             block_size)
+        cls._prepareMetadata(
+            domainDir,
+            sdUUID,
+            domainName,
+            domClass,
+            remotePath,
+            storageType,
+            version,
+            alignment,
+            block_size,
+        )
 
         # create domain images folder
         imagesDir = os.path.join(domainDir, sd.DOMAIN_IMAGES)

@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 
 class HosttailError(Exception):
@@ -67,4 +64,4 @@ def _is_literal_ipv6_addr_soft_check(addr):
 
 def _ipv6addr_hosttail_split(hostport):
     end_of_host = hostport.index(']:')
-    return hostport[1:end_of_host], hostport[end_of_host + 2:]
+    return hostport[1:end_of_host], hostport[end_of_host + 2 :]

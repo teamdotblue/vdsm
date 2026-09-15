@@ -1,11 +1,9 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 blockdev - data operations on block devices.
 """
-
-from __future__ import absolute_import
 
 import logging
 
@@ -59,15 +57,17 @@ def zero(device_path, size=None, task=_NullTask()):
         raise se.InvalidParameterException("size", size)
 
     log.info("Zeroing device %s (size=%d)", device_path, size)
-    with utils.stopwatch("Zero device %s" % device_path,
-                         level=logging.INFO, log=log):
+    with utils.stopwatch(
+        "Zero device %s" % device_path, level=logging.INFO, log=log
+    ):
         try:
             op = blkdiscard.zeroout_operation(device_path, size)
             with task.abort_callback(op.abort):
                 op.run()
         except se.StorageException as e:
-            raise se.VolumesZeroingError("Zeroing device %s failed: %s"
-                                         % (device_path, e))
+            raise se.VolumesZeroingError(
+                "Zeroing device %s failed: %s" % (device_path, e)
+            )
 
 
 def discard(device_path):
@@ -82,8 +82,9 @@ def discard(device_path):
     """
     log.info("Discarding device %s", device_path)
     try:
-        with utils.stopwatch("Discarded device %s" % device_path,
-                             level=logging.INFO, log=log):
+        with utils.stopwatch(
+            "Discarded device %s" % device_path, level=logging.INFO, log=log
+        ):
             blkdiscard.discard(device_path)
     except cmdutils.Error as e:
         log.warning("Discarding device %s failed: %s", device_path, e)

@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 """
 Ensure that lib/vdsm modules do not depend on private modules in
@@ -28,9 +25,9 @@ def find_modules():
         raise
 
     vdsm_pkg = importlib.import_module("vdsm")
-    for _, name, _ in pkgutil.walk_packages(vdsm_pkg.__path__,
-                                            prefix="vdsm.",
-                                            onerror=error):
+    for _, name, _ in pkgutil.walk_packages(
+        vdsm_pkg.__path__, prefix="vdsm.", onerror=error
+    ):
         if name in expected_to_fail:
             name = pytest.param(name, marks=pytest.mark.xfail)
         yield name

@@ -1,14 +1,11 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from contextlib import contextmanager
 
 from vdsm.storage import threadPool
 
-from . storagetestlib import Callable
+from .storagetestlib import Callable
 
 # Fail tests if callable is hang for longer time.
 HANG_TIMEOUT = 5

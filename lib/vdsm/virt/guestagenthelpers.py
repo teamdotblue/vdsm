@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 import datetime
 from dateutil import tz
@@ -111,7 +108,7 @@ def translate_linux_osinfo(os_info):
             'distribution': os_info[prefix + 'name'],
             'version': os_info[prefix + 'version-id'],
             'codename': os_info[prefix + 'variant'],
-        }
+        },
     }
 
 
@@ -151,7 +148,7 @@ def translate_windows_osinfo(os_info):
             'distribution': '',
             'version': os_info[prefix + 'kernel-version'],
             'codename': os_info[prefix + 'pretty-name'],
-        }
+        },
     }
 
 

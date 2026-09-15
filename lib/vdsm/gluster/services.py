@@ -1,23 +1,23 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from vdsm.gluster import exception as ge
 from vdsm.tool import service
 
 from . import gluster_mgmt_api
 
-
-SUPPORTED_SERVICES = frozenset(("glusterd",
-                                "memcached",
-                                "gluster-swift-proxy",
-                                "gluster-swift-container",
-                                "gluster-swift-object",
-                                "gluster-swift-account",
-                                "smb",
-                                "vdo"))
+SUPPORTED_SERVICES = frozenset(
+    (
+        "glusterd",
+        "memcached",
+        "gluster-swift-proxy",
+        "gluster-swift-container",
+        "gluster-swift-object",
+        "gluster-swift-account",
+        "smb",
+        "vdo",
+    )
+)
 
 
 class StatusTypes:

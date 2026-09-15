@@ -1,9 +1,6 @@
 # SPDX-FileCopyrightText: Sandro Bonazzola <sandro.bonazzola@gmail.com>
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
 
 from base64 import b64encode
 import os
@@ -28,6 +25,7 @@ class MkimageTestCase(VdsmTestCase):
     """
     Tests for mkimage module.
     """
+
     # pylint: disable=R0904
 
     def setUp(self):
@@ -60,11 +58,13 @@ class MkimageTestCase(VdsmTestCase):
             self.expected_results[longpath] = content
             self.files[longpath] = encoded_content
 
-        self.patch = Patch([
-            (mkimage, "DISKIMAGE_USER", -1),
-            (mkimage, "DISKIMAGE_GROUP", -1),
-            (mkimage, "_P_PAYLOAD_IMAGES", self.img_dir),
-        ])
+        self.patch = Patch(
+            [
+                (mkimage, "DISKIMAGE_USER", -1),
+                (mkimage, "DISKIMAGE_GROUP", -1),
+                (mkimage, "_P_PAYLOAD_IMAGES", self.img_dir),
+            ]
+        )
 
         # Must be last; if setUp fails, tearDown is not invoked
         self.patch.apply()
@@ -87,8 +87,11 @@ class MkimageTestCase(VdsmTestCase):
         data = os.stat(filepath)
         if stat.S_ISREG(data.st_mode):
             for perm, expected in permsMask:
-                self.assertEqual(bool(data.st_mode & perm), expected,
-                                 '%s: %s' % (filepath, oct(data.st_mode)))
+                self.assertEqual(
+                    bool(data.st_mode & perm),
+                    expected,
+                    '%s: %s' % (filepath, oct(data.st_mode)),
+                )
 
     def _check_content(self, checkPerms=True):
         """
@@ -105,18 +108,30 @@ class MkimageTestCase(VdsmTestCase):
                 self.assertIn(os.path.basename(filename), out_subdir)
             filepath = os.path.join(self.workdir, filename)
             if checkPerms:
-                self._check_permissions(filepath,
-                                        ((stat.S_IRUSR, True),
-                                         (stat.S_IWUSR, True),
-                                         (stat.S_IXUSR, False)))
-                self._check_permissions(filepath,
-                                        ((stat.S_IRGRP, True),
-                                         (stat.S_IWGRP, False),
-                                         (stat.S_IXGRP, False)))
-                self._check_permissions(filepath,
-                                        ((stat.S_IROTH, False),
-                                         (stat.S_IWOTH, False),
-                                         (stat.S_IXOTH, False)))
+                self._check_permissions(
+                    filepath,
+                    (
+                        (stat.S_IRUSR, True),
+                        (stat.S_IWUSR, True),
+                        (stat.S_IXUSR, False),
+                    ),
+                )
+                self._check_permissions(
+                    filepath,
+                    (
+                        (stat.S_IRGRP, True),
+                        (stat.S_IWGRP, False),
+                        (stat.S_IXGRP, False),
+                    ),
+                )
+                self._check_permissions(
+                    filepath,
+                    (
+                        (stat.S_IROTH, False),
+                        (stat.S_IWOTH, False),
+                        (stat.S_IXOTH, False),
+                    ),
+                )
             with open(filepath, "rb") as fd:
                 content = fd.read()
                 self.assertEqual(content, self.expected_results[filename])

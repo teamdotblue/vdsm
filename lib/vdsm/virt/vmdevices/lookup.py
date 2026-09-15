@@ -1,9 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
-
 
 from vdsm.common import xmlutils
 from vdsm.virt.vmdevices import core
@@ -55,15 +51,16 @@ def xml_device_by_alias(device_xml, alias):
         xml_alias = core.find_device_alias(dom)
         if xml_alias and xml_alias == alias:
             return dom
-    raise LookupError("Unable to find matching XML for device %r" %
-                      (alias,))
+    raise LookupError("Unable to find matching XML for device %r" % (alias,))
 
 
 def hotpluggable_device_by_alias(device_dict, alias):
     for device_hwclass in hwclass.HOTPLUGGABLE:
         try:
-            return device_by_alias(device_dict[device_hwclass][:], alias), \
-                device_hwclass
+            return (
+                device_by_alias(device_dict[device_hwclass][:], alias),
+                device_hwclass,
+            )
         except LookupError:
             pass
     raise LookupError("No such device: alias=%r" % alias)
@@ -90,13 +87,18 @@ def conf_by_alias(conf, dev_type, alias):
                 return dev_conf
         except KeyError:
             continue
-    raise LookupError('Configuration of device identified by alias %s '
-                      'and type %s not found' % (alias, dev_type,))
+    raise LookupError(
+        'Configuration of device identified by alias %s '
+        'and type %s not found'
+        % (
+            alias,
+            dev_type,
+        )
+    )
 
 
 def conf_by_path(conf, path):
     for dev_conf in conf[:]:
         if dev_conf.get('path') == path:
             return dev_conf
-    raise LookupError(
-        'Configuration of device with path %r not found' % path)
+    raise LookupError('Configuration of device with path %r not found' % path)

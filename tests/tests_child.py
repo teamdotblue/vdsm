@@ -1,8 +1,6 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 import functools
 import signal
 import subprocess
@@ -24,7 +22,9 @@ def child_test(register=True):
                 return func(*args, **kwargs)
             finally:
                 sys.stdout.write('done\n')
+
         return wrapper
+
     return decorator
 
 
@@ -63,6 +63,7 @@ def check_child_signal_to_thread():
     def thread_target():
         subprocess.Popen(['true'])
         time.sleep(1)  # sleep so SIGCHLD is delivered here.
+
     threading.Thread(target=thread_target).start()
     sigutils.wait_for_signal()
 
@@ -85,10 +86,12 @@ def check_uninitialized():
 
 if __name__ == '__main__':
     # Set up signal handlers
-    signal.signal(signal.SIGUSR1,
-                  lambda *_: sys.stdout.write('signal sigusr1\n'))
-    signal.signal(signal.SIGCHLD,
-                  lambda *_: sys.stdout.write('signal sigchld\n'))
+    signal.signal(
+        signal.SIGUSR1, lambda *_: sys.stdout.write('signal sigusr1\n')
+    )
+    signal.signal(
+        signal.SIGCHLD, lambda *_: sys.stdout.write('signal sigchld\n')
+    )
 
     # Set timer to kill the process in case we're stuck.
     signal.signal(signal.SIGALRM, lambda *_: sys.exit(1))

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """libnl and libnl-route bindings.
@@ -14,9 +14,6 @@ native Python manner.
 - Values are returned only via 'return', never as a pointer argument.
 - Errors are raised as exceptions, never as a return code.
 """
-
-from __future__ import absolute_import
-from __future__ import division
 
 from ctypes import CDLL
 from ctypes import CFUNCTYPE

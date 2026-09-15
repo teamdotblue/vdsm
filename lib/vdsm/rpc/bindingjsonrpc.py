@@ -1,9 +1,7 @@
 # SPDX-FileCopyrightText: 2012 Adam Litke, IBM Corporation
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 import functools
 import logging
 
@@ -13,7 +11,6 @@ from yajsonrpc.stompserver import StompReactor
 from vdsm import executor
 from vdsm.common import concurrent
 from vdsm.config import config
-
 
 # TODO test what should be the default values
 _TIMEOUT = config.getint('rpc', 'worker_timeout')
@@ -26,15 +23,21 @@ class BindingJsonRpc(object):
     log = logging.getLogger('BindingJsonRpc')
 
     def __init__(self, bridge, subs, timeout, scheduler, cif):
-        self._executor = executor.Executor(name="jsonrpc",
-                                           workers_count=_THREADS,
-                                           max_tasks=_TASKS,
-                                           scheduler=scheduler)
+        self._executor = executor.Executor(
+            name="jsonrpc",
+            workers_count=_THREADS,
+            max_tasks=_TASKS,
+            scheduler=scheduler,
+        )
         self._bridge = bridge
         self._server = JsonRpcServer(
-            bridge, timeout, cif,
-            functools.partial(self._executor.dispatch,
-                              timeout=_TIMEOUT, discard=False))
+            bridge,
+            timeout,
+            cif,
+            functools.partial(
+                self._executor.dispatch, timeout=_TIMEOUT, discard=False
+            ),
+        )
         self._reactor = StompReactor(subs)
         self.startReactor()
 
@@ -55,14 +58,16 @@ class BindingJsonRpc(object):
     def start(self):
         self._executor.start()
 
-        t = concurrent.thread(self._server.serve_requests,
-                              name='JsonRpcServer')
+        t = concurrent.thread(
+            self._server.serve_requests, name='JsonRpcServer'
+        )
         t.start()
 
     def startReactor(self):
         reactorName = self._reactor.__class__.__name__
-        t = concurrent.thread(self._reactor.process_requests,
-                              name='JsonRpc (%s)' % reactorName)
+        t = concurrent.thread(
+            self._reactor.process_requests, name='JsonRpc (%s)' % reactorName
+        )
         t.start()
 
     def stop(self):

@@ -1,9 +1,5 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
-
-from __future__ import absolute_import
-from __future__ import division
-
 
 from vdsm.common import xmlutils
 from vdsm.virt import displaynetwork
@@ -24,6 +20,7 @@ def display_info(domain):
             'tlsPort': vmxml.attr(gxml, 'tlsPort'),
             'ipAddress': display_ip,
         }
+
     return [info(gxml) for gxml in domain.get_device_elements('graphics')]
 
 
@@ -70,8 +67,10 @@ def is_vnc_secure(vmParams, log):
             # this is a way to say 'don't use password auth'.
             no_password_auth = vmxml.attr(g, 'passwdValidTo') == ''
             if no_password_auth and not utils.sasl_enabled():
-                log.warning("VNC not secure: passwdValidTo empty or missing"
-                            " and SASL not configured")
+                log.warning(
+                    "VNC not secure: passwdValidTo empty or missing"
+                    " and SASL not configured"
+                )
                 return False
     return True
 

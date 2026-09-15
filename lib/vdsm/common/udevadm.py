@@ -1,15 +1,14 @@
-# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: oVirt Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from __future__ import absolute_import
-from __future__ import division
 import logging
 
 from vdsm.common import cmdutils
 from vdsm.common import commands
 
 _UDEVADM = cmdutils.CommandPath(
-    "udevadm", "/sbin/udevadm", "/usr/sbin/udevadm")
+    "udevadm", "/sbin/udevadm", "/usr/sbin/udevadm"
+)
 
 
 def settle(timeout, exit_if_exists=None):
